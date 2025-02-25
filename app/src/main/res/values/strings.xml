@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PhotoSpot</string>
+    <string name="title_home">Add</string>
+    <string name="title_dashboard">List</string>
+    <string name="title_notifications">Map</string>
+    <string name="button_get_location">Get Location</string>
+</resources>
