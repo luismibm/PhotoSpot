@@ -1,6 +1,7 @@
 package com.luismibm.photospot
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +16,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.luismibm.photospot.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +28,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
     private lateinit var sharedViewModel: SharedViewModel
+
+    var signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            var user = FirebaseAuth.getInstance().currentUser as FirebaseUser
+            sharedViewModel.setUser(user)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +72,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        var auth: FirebaseAuth = FirebaseAuth.getInstance()
+        if (auth.currentUser == null) {
+            val signInIntent: Intent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setIsSmartLockEnabled(false)
+                .setAvailableProviders(
+                    arrayListOf(
+                        AuthUI.IdpConfig.EmailBuilder().build(),
+                        AuthUI.IdpConfig.GoogleBuilder().build()
+                    )
+                ).build()
+            signInLauncher.launch(signInIntent)
+        } else {
+            sharedViewModel.setUser(auth.currentUser!!)
+        }
     }
 
     fun checkPermission() {

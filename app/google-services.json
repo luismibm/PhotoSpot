@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "820843498173",
+    "project_id": "photo-spot-luismi",
+    "storage_bucket": "photo-spot-luismi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820843498173:android:efd86e89f83598431d05d4",
+        "android_client_info": {
+          "package_name": "com.luismibm.photospot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqTraTTLg35jaYnZNr4MPT6t6Atepu3os"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

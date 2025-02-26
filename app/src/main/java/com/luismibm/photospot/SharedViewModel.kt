@@ -10,12 +10,14 @@ import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
+import com.google.firebase.auth.FirebaseUser
 import java.util.ArrayList
 import java.util.Locale
 import java.util.concurrent.Executors
@@ -23,6 +25,10 @@ import java.util.concurrent.Executors
 class SharedViewModel(application: Application): AndroidViewModel(application) {
 
     val app = application
+
+    private val user = MutableLiveData<FirebaseUser>()
+    fun getUser(): LiveData<FirebaseUser> { return user }
+    fun setUser(passedUser: FirebaseUser) { user.postValue(passedUser) }
 
     val currentAddress = MutableLiveData<String>()
     val checkPermission = MutableLiveData<String>()
