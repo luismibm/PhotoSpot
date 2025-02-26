@@ -5,4 +5,6 @@ class PhotoSpot (
     var longitude: String,
     var location: String,
     var description: String
-)
+) {
+    constructor(): this("", "", "", "")
+}
