@@ -17,6 +17,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
 import java.util.ArrayList
 import java.util.Locale
@@ -31,6 +32,7 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
     fun setUser(passedUser: FirebaseUser) { user.postValue(passedUser) }
 
     val currentAddress = MutableLiveData<String>()
+    val currentLatLng = MutableLiveData<LatLng>()
     val checkPermission = MutableLiveData<String>()
     val buttonText = MutableLiveData<String>()
     // val loadingIcon = MutableLiveData<Boolean>()
@@ -92,13 +94,14 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
         executor.execute {
             val addresses: List<Address>?
             var resultMessage = ""
-
             try {
                 addresses = geocoder.getFromLocation(
                     location.latitude,
                     location.longitude,
                     1
                 )
+                val latLng = LatLng(location.longitude, location.latitude)
+                currentLatLng.postValue(latLng)
                 if (addresses.isNullOrEmpty()) {
                     if (resultMessage.isEmpty()) {
                         resultMessage = "No Address Found"
