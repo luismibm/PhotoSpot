@@ -122,16 +122,6 @@
             android:hint="Direcció" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-        tools:layout_editor_absoluteX="8dp" />
-
     <Button
         android:id="@+id/button_notify"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -150,6 +140,27 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+
+    <Button
+        android:id="@+id/button_foto"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fotografia"
+        app:layout_constraintBottom_toTopOf="@+id/guide_image_portrait"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_get_location" />
+
+    <ImageView
+        android:id="@+id/foto"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@android:drawable/ic_delete"
+        app:layout_constraintBottom_toTopOf="@+id/guide_image_portrait"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/button_notify" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

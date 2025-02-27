@@ -47,12 +47,14 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
     val mLocationCallback = object: LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             // fetchAddress(locationResult.lastLocation)
-            locationResult.lastLocation?.let { fetchAddress(it) }
+            locationResult.lastLocation?.let { location ->
+                fetchAddress(location)
+            }
         }
     }
 
     fun getLocationRequest(): LocationRequest {
-        return LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000).setMinUpdateIntervalMillis(5000).build()
+        return LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000L).setMinUpdateIntervalMillis(5000L).build()
     }
 
     fun switchTrackingLocation() {
@@ -68,7 +70,7 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
         if (needsChecking) {
             checkPermission.postValue("Check")
         } else {
-            mFusedLocationClient.requestLocationUpdates(getLocationRequest(), mLocationCallback, null)
+            mFusedLocationClient.requestLocationUpdates(getLocationRequest(), mLocationCallback, Looper.getMainLooper())
             currentAddress.postValue("Loading...")
             mTrackingLocation = true
             // loadingIcon.postValue(true)
@@ -87,11 +89,14 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
 
     fun fetchAddress(location: Location) {
 
+        Log.d("VIEWMODEL", "fetchAdress() starts")
         val executor = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
         val geocoder = Geocoder(app.applicationContext, Locale.getDefault())
 
+        Log.d("VIEWMODEL", "Before entering the executor")
         executor.execute {
+            Log.d("VIEWMODEL", "After entering the executor")
             val addresses: List<Address>?
             var resultMessage = ""
             try {
@@ -100,8 +105,11 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
                     location.longitude,
                     1
                 )
+                Log.d("VIEWMODEL", addresses.toString())
                 val latLng = LatLng(location.longitude, location.latitude)
+                Log.d("VIEWMODEL", "Antes: currentLatLng: ${currentLatLng.value} // latlng: $latLng")
                 currentLatLng.postValue(latLng)
+                Log.d("VIEWMODEL", "Después: currentLatLng: ${currentLatLng.value} // latlng: $latLng")
                 if (addresses.isNullOrEmpty()) {
                     if (resultMessage.isEmpty()) {
                         resultMessage = "No Address Found"
