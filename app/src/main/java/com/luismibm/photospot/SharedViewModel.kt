@@ -100,11 +100,7 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
             val addresses: List<Address>?
             var resultMessage = ""
             try {
-                addresses = geocoder.getFromLocation(
-                    location.latitude,
-                    location.longitude,
-                    1
-                )
+                addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 Log.d("VIEWMODEL", addresses.toString())
                 val latLng = LatLng(location.longitude, location.latitude)
                 Log.d("VIEWMODEL", "Antes: currentLatLng: ${currentLatLng.value} // latlng: $latLng")
